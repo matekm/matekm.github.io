@@ -5,7 +5,7 @@ crosspost_to_medium: false
 excerpt_separator: <!--read more-->
 ---
 
-Few weeks ago I had a time to play with a Salesforce Streamin API, the API that allows you to receive notification to Salesforce data that match a SOQL query you define. Unfortunatelly, the way you should use the API isn't very well defined (or at least I couldn't found anything helpful), so I needed to dig into Comet (a protocol that is used by Salesforce Streaming API) documentation and learn by doing stuff. After that, I decided to write a blog post to share what I learned.
+Few weeks ago I had a time to play with a Salesforce Streaming API, the API that allows you to receive notification to Salesforce data that match a SOQL query you define. Unfortunately, the way you should use the API isn't very well defined (or at least I couldn't found anything helpful), so I needed to dig into Comet (a protocol that is used by Salesforce Streaming API) documentation and learn by doing stuff. After that, I decided to write a blog post to share what I learned.
 
 <!--read more-->
 **Prerequisites**
@@ -65,7 +65,7 @@ The Salesforce server will responde with response that looks similar to the one 
 }
  {% endhighlight %}
 
-The key fields here are *access_token* , which contains the token you will use to authorize next requests and *instance_url* which is the server you will need to use in your next requests. They refered as {access_token} and {instance_url}, so every time you see those strings, you need to put the *access_token* and *instance_url* you received in token response.
+The key fields here are *access_token* , which contains the token you will use to authorize next requests and *instance_url* which is the server you will need to use in your next requests. They reffered as {access_token} and {instance_url}, so every time you see those strings, you need to put the *access_token* and *instance_url* you received in token response.
 
  After obtaining the token, you need to perform a handshake with a Salesforce CometD server by sending following POST request:
 
@@ -83,9 +83,9 @@ The key fields here are *access_token* , which contains the token you will use t
  }]
 {% endhighlight %}
 
-In the request body, */meta/handshake* is the channel for performing handshake - each client always needs to send first message to that channel. *version* and *minimumVersion* inform about expected protocol version used by the client adn minimum protocol version client supports and *supportedConnectionTypes* informs about supported connection types by the client.
+In the request body, */meta/handshake* is the channel for performing handshake - each client always needs to send first message to that channel. *version* and *minimumVersion* inform about expected protocol version used by the client and minimum protocol version client supports and *supportedConnectionTypes* informs about supported connection types by the client.
 
-If the handshake procedure will be successfull, the server will create a client session and respond with a request that should be similar to the one below:
+If the handshake procedure will be successful, the server will create a client session and respond with a request that should be similar to the one below:
 
 {% highlight Json linenos %}
  [
@@ -122,9 +122,9 @@ Content-Type: application/json
 }
 {% endhighlight %}
 
-The message must define a *channel* and set it to */meta/connect*, it must provide a *client_id* received in handshake response in order to identify client and it also must specyfi *connectionType* that is supported by the server (remember, Salesforce support only long-pooling connection)
+The message must define a *channel* and set it to */meta/connect*, it must provide a *client_id* received in handshake response in order to identify client and it also must specify *connectionType* that is supported by the server (remember, Salesforce support only long-pooling connection)
 
-Reposne to this message may be:
+Response to this message may be:
 {% highlight Json linenos %}
 [
   {
@@ -140,7 +140,7 @@ Reposne to this message may be:
 ]
 {% endhighlight %}
 
-If the connection was successful, *successful* flag will be set to *true*. Server also can sent an *advice* object. It may contain *inverval* which informs after how long client can send another request to the server and *timeout* which informs client how much time will take the server to respond for the next connect request.
+If the connection was successful, *successful* flag will be set to *true*. Server also can sent an *advice* object. It may contain *interval* which informs after how long client can send another request to the server and *timeout* which informs client how much time will take the server to respond for the next connect request.
 
 Important thing to note here is that */meta/connect* requests are heart-beat mechanism and a channel on which we receive updates for our subscriptions, which means client MUST send those request periodically, according to advice he gets from the server.
 
@@ -174,9 +174,9 @@ You should receive following response:
 ]
 {% endhighlight %}
 
-which will mean that you successfuly subscrbed to the channel.
+which will mean that you successfully subscribed to the channel.
 
-Now, you need to start sending GET request to the connect channel in order to get updates when new Lead is created. After you do that, go to Salesforce Service Console and create new Lead. Immediately you should get a notifcation over connect channel that looks similary to this one below:
+Now, you need to start sending GET request to the connect channel in order to get updates when new Lead is created. After you do that, go to Salesforce Service Console and create new Lead. Immediately you should get a notification over connect channel that looks similary to this one below:
 
 {% highlight json linenos %}
 [
